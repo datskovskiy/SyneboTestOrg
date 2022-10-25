@@ -8,7 +8,9 @@ public with sharing class TestQuestionAnswerTriggerHandler {
             }
         }
         
-        changeEmployeeTestNumberAnswers(questionAnswersWithChangedActive);
+        if (!questionAnswersWithChangedActive.isEmpty()) {           
+            changeEmployeeTestNumberAnswers(questionAnswersWithChangedActive);
+        }
     }
 
     public static void changeEmployeeTestNumberAnswers(List<TestQuestionAnswer__c> questionAnswers) {
