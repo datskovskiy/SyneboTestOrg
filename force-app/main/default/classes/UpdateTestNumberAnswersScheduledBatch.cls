@@ -1,4 +1,4 @@
-public class UpdateTestNumberAnswersScheduledBatch implements Database.Batchable<sObject>, Schedulable {
+public with sharing class UpdateTestNumberAnswersScheduledBatch implements Database.Batchable<sObject>, Schedulable {
     String Email;
     String query = 'SELECT Id FROM EmployeeTest__c WHERE Active__c = TRUE';
     
