@@ -1,14 +1,14 @@
 public with sharing class ExternalPostUpdater implements Queueable, Database.AllowsCallouts {
-    private class PostDTO {
-        public Integer UserId;
-        public String Title;
-        public string Body;
+    private class PostWrapper {
+        public Integer userId;
+        public String title;
+        public string body;
     }
 
     public void execute(QueueableContext context) {
-        PostDTO newPost = new PostDTO();
-        newPost.Body = 'bar';
-        newPost.Title = 'foo';
+        PostWrapper newPost = new PostWrapper();
+        newPost.body = 'bar';
+        newPost.title = 'foo';
         newPost.userId = 1;
         
         Http http = new Http();

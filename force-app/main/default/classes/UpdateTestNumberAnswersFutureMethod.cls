@@ -3,6 +3,7 @@ public with sharing class UpdateTestNumberAnswersFutureMethod {
     @future
     public static void executeUpdateTestNumberAnswers(List<Id> testsIds) {
         List<EmployeeTest__c> testsToUpdate = new List<EmployeeTest__c>();
+        List<Id> testsIdsWithNumberAnswers = new List<Id>();
 
         List<AggregateResult> result = [SELECT TestQuestion__r.Employee_test__c TestId, 
                                             MIN(TestQuestion__r.Employee_test__r.NumberAnswers__c) OldNumberAnswers, 
@@ -21,11 +22,13 @@ public with sharing class UpdateTestNumberAnswersFutureMethod {
                 testsToUpdate.add(new EmployeeTest__c(Id = testId, NumberAnswers__c = numAnswers));
             }
 
-            testsIds.remove(testsIds.indexOf(testId));
+            testsIdsWithNumberAnswers.add(testId);
         }
 
         for (Id testId : testsIds) {
-            testsToUpdate.add(new EmployeeTest__c(Id = testId, NumberAnswers__c = 0));    
+            if (!testsIdsWithNumberAnswers.contains(testId)) {
+                testsToUpdate.add(new EmployeeTest__c(Id = testId, NumberAnswers__c = 0));    
+            }         
         }
 
         if (!testsToUpdate.isEmpty()) {          

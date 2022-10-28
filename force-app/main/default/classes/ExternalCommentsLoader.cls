@@ -1,15 +1,15 @@
 public with sharing class ExternalCommentsLoader implements Queueable, Database.AllowsCallouts {
-    private class CommentDTO {
-        public Integer Id;
-        public Integer PostId;
-        public String Name;
-        public String Email;
-        public string Body;
+    private class CommentWrapper {
+        public Integer id;
+        public Integer postId;
+        public String name;
+        public String email;
+        public string body;
     }
 
     public void execute(QueueableContext context) {
         List<PostComment__c> postCommentsToUpsert = new List<PostComment__c>();
-        List<CommentDTO> comments = new List<CommentDTO>();
+        List<CommentWrapper> comments = new List<CommentWrapper>();
 
         Http http = new Http();
 
@@ -19,15 +19,15 @@ public with sharing class ExternalCommentsLoader implements Queueable, Database.
         
         HttpResponse response = http.send(request);
         if (response.getStatusCode() == 200) {
-            comments = (List<CommentDTO>) JSON.deserialize(response.getBody(), List<CommentDTO>.class);
+            comments = (List<CommentWrapper>) JSON.deserialize(response.getBody(), List<CommentWrapper>.class);
             
-            for (CommentDTO comment : comments) { 
-                Post__c post = new Post__c(ExternalId__c = comment.PostId);
-                PostComment__c commentToupsert = new PostComment__c(ExternalId__c = comment.Id,
+            for (CommentWrapper comment : comments) { 
+                Post__c post = new Post__c(ExternalId__c = comment.postId);
+                PostComment__c commentToupsert = new PostComment__c(ExternalId__c = comment.id,
                                                                     Post__r = post,
-                                                                    Name__c = comment.Name,
-                                                                    Email__c = comment.Email,
-                                                                    Body__c = comment.Body);                
+                                                                    Name__c = comment.name,
+                                                                    Email__c = comment.email,
+                                                                    Body__c = comment.body);                
                                                             
                 postCommentsToUpsert.add(commentToupsert);
             }

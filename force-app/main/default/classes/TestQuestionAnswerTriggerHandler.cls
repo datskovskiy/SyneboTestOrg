@@ -15,6 +15,7 @@ public with sharing class TestQuestionAnswerTriggerHandler {
 
     public static void changeEmployeeTestNumberAnswers(List<TestQuestionAnswer__c> questionAnswers) {
         List<EmployeeTest__c> testsToUpdate = new List<EmployeeTest__c>();
+        Set<Id> testsIdsWithNumberAnswers = new Set<Id>();
 
         Set<Id> testsIds = getTestIdsForQuestionAnswers(questionAnswers);        
         List<AggregateResult> result = [SELECT TestQuestion__r.Employee_test__c TestId, 
@@ -34,11 +35,13 @@ public with sharing class TestQuestionAnswerTriggerHandler {
                 testsToUpdate.add(new EmployeeTest__c(Id = testId, NumberAnswers__c = numAnswers));
             }
 
-            testsIds.remove(testId);
+            testsIdsWithNumberAnswers.add(testId);
         }
 
         for (Id testId : testsIds) {
-            testsToUpdate.add(new EmployeeTest__c(Id = testId, NumberAnswers__c = 0));    
+            if (!testsIdsWithNumberAnswers.contains(testId)) {
+                testsToUpdate.add(new EmployeeTest__c(Id = testId, NumberAnswers__c = 0)); 
+            }   
         }
 
         if (!testsToUpdate.isEmpty()) {          

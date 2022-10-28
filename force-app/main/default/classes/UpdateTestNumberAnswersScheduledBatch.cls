@@ -16,6 +16,7 @@ public with sharing class UpdateTestNumberAnswersScheduledBatch implements Datab
     
     public void execute(Database.BatchableContext bc, List<EmployeeTest__c> scope) {
     	List<EmployeeTest__c> testsToUpdate = new List<EmployeeTest__c>();
+        List<EmployeeTest__c> testsWithNumberAnswers = new List<EmployeeTest__c>();
         
         List<AggregateResult> result = [SELECT TestQuestion__r.Employee_test__c TestId, 
                                             MIN(TestQuestion__r.Employee_test__r.NumberAnswers__c) OldNumberAnswers, 
@@ -34,12 +35,14 @@ public with sharing class UpdateTestNumberAnswersScheduledBatch implements Datab
                 testsToUpdate.add(new EmployeeTest__c(Id = testId, NumberAnswers__c = numAnswers));
             }
 
-            scope.remove(scope.indexOf(new EmployeeTest__c(Id = testId)));
+            testsWithNumberAnswers.add(new EmployeeTest__c(Id = testId));
         }
 
         for (EmployeeTest__c scope_i : scope) {
-            scope_i.NumberAnswers__c = 0;
-            testsToUpdate.add(scope_i);    
+            if (!testsWithNumberAnswers.contains(scope_i)) {
+                scope_i.NumberAnswers__c = 0;
+                testsToUpdate.add(scope_i);
+            }       
         }
 
         if (!testsToUpdate.isEmpty()) {          

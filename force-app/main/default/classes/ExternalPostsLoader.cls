@@ -1,14 +1,14 @@
 public with sharing class ExternalPostsLoader implements Queueable, Database.AllowsCallouts {
-    private class PostDTO {
-        public Integer Id;
-        public Integer UserId;
-        public String Title;
-        public string Body;
+    private class PostWrapper {
+        public Integer id;
+        public Integer userId;
+        public String title;
+        public string body;
     }
 
     public void execute(QueueableContext context) {
         List<Post__c> postsToUpsert = new List<Post__c>();
-        List<PostDTO> posts = new List<PostDTO>();
+        List<PostWrapper> posts = new List<PostWrapper>();
 
         Http http = new Http();
 
@@ -19,12 +19,12 @@ public with sharing class ExternalPostsLoader implements Queueable, Database.All
         HttpResponse response = http.send(request);
 
         if (response.getStatusCode() == 200) {
-            posts = (List<PostDTO>) JSON.deserialize(response.getBody(), List<PostDTO>.class);
-            for (PostDTO post : posts) { 
-                Post__c postToupsert = new Post__c(ExternalId__c = post.Id, 
-                                                    UserId__c = post.UserId,
-                                                    Title__c = post.Title,
-                                                    Body__c = post.Body);                
+            posts = (List<PostWrapper>) JSON.deserialize(response.getBody(), List<PostWrapper>.class);
+            for (PostWrapper post : posts) { 
+                Post__c postToupsert = new Post__c(ExternalId__c = post.id, 
+                                                    UserId__c = post.userId,
+                                                    Title__c = post.title,
+                                                    Body__c = post.body);                
                 postsToUpsert.add(postToupsert);
             }
         }
