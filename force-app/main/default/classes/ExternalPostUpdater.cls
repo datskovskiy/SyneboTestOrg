@@ -14,7 +14,7 @@ public with sharing class ExternalPostUpdater implements Queueable, Database.All
         Http http = new Http();
 
         HttpRequest request = new HttpRequest();
-        request.setEndpoint('https://jsonplaceholder.typicode.com/posts');
+        request.setEndpoint('callout:JSONPlaceholder/posts');
         request.setMethod('POST');
         request.setHeader('Content-Type', 'application/json;charset=UTF-8');
         request.setBody(JSON.serialize(newPost));

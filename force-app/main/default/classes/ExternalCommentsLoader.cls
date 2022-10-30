@@ -14,7 +14,7 @@ public with sharing class ExternalCommentsLoader implements Queueable, Database.
         Http http = new Http();
 
         HttpRequest request = new HttpRequest();
-        request.setEndpoint('https://jsonplaceholder.typicode.com/comments');
+        request.setEndpoint('callout:JSONPlaceholder/comments');
         request.setMethod('GET');
         
         HttpResponse response = http.send(request);

@@ -13,7 +13,7 @@ public with sharing class ExternalPostsLoader implements Queueable, Database.All
         Http http = new Http();
 
         HttpRequest request = new HttpRequest();
-        request.setEndpoint('https://jsonplaceholder.typicode.com/posts');
+        request.setEndpoint('callout:JSONPlaceholder/posts');
         request.setMethod('GET');
         
         HttpResponse response = http.send(request);
