@@ -33,6 +33,8 @@ public with sharing class ExternalPostsLoader implements Queueable, Database.All
             upsert postsToUpsert ExternalId__c;
         }
 
-        System.enqueueJob(new ExternalCommentsLoader()); 
+        if (!Test.isRunningTest()) {
+            System.enqueueJob(new ExternalCommentsLoader()); 
+        }
     }
 }
