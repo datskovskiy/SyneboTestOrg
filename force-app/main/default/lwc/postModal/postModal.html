@@ -1,0 +1,16 @@
+<template>
+    <lightning-modal-header label="Post"></lightning-modal-header>
+    <lightning-modal-body> 
+        <div class="slds-p-around_medium lgc-bg">
+            <lightning-input type="text" name="postName" label="Post Name"></lightning-input>
+            <lightning-input type="number" name="externalId" label="External Id" ></lightning-input>
+            <lightning-input type="number" name="userId" label="User Id" ></lightning-input>
+            <lightning-input type="text" name="title" label="Title"></lightning-input>
+            <lightning-input type="text" name="body" label="Body"></lightning-input>
+        </div>    
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <lightning-button label="Save" variant="success" class="slds-m-left_x-small" onclick={handleSave}></lightning-button>
+        <lightning-button label="Cancel" variant="destructive" class="slds-m-left_x-small" onclick={handleCancel}></lightning-button>
+    </lightning-modal-footer>
+</template>
