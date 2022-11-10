@@ -5,10 +5,16 @@ export default class PostComponent extends LightningElement {
 
     async createPostClick() {
         const result = await PostModal.open({
-            size: 'medium'
+            label: 'Post',
+            size: 'small',
+            description: 'Post record',
+            onshowtoast: (e) => {
+                e.stopPropagation();
+                //this.handleSelectEvent(e.detail);
+                // or proxy to be handled above by dispatching
+                // another custom event to pass on the event
+                // this.dispatchEvent(e);
+              }
         });
-        // if modal closed with X button, promise returns result = 'undefined'
-        // if modal closed with OK button, promise returns result = 'okay'
-        console.log(result);
     }
 }
