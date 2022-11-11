@@ -2,10 +2,10 @@
     <lightning-modal-header label="Post"></lightning-modal-header>
     <lightning-modal-body> 
         <div class="slds-p-around_medium lgc-bg">
-            <lightning-input type="number" name="externalId" label="External Id" value={externalId} onchange={externalIdChange}></lightning-input>
-            <lightning-input type="number" name="userId" label="User Id" value={userId} onchange={userIdChange}></lightning-input>
-            <lightning-input type="text" name="title" label="Title" value={title} onchange={titleChange}></lightning-input>
-            <lightning-input type="text" name="body" label="Body" value={body} onchange={bodyChange}>></lightning-input>
+            <lightning-input type="number" name="externalId" label="External Id" value={externalId} onchange={postHandleChange}></lightning-input>
+            <lightning-input type="number" name="userId" label="User Id" value={userId} onchange={postHandleChange}></lightning-input>
+            <lightning-input type="text" name="title" label="Title" value={title} onchange={postHandleChange}></lightning-input>
+            <lightning-input type="text" name="body" label="Body" value={body} onchange={postHandleChange}></lightning-input>
         </div>    
     </lightning-modal-body>
     <lightning-modal-footer>
