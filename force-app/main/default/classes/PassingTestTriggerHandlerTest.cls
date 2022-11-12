@@ -5,7 +5,14 @@ public with sharing class PassingTestTriggerHandlerTest {
     public static void setup() {
         Employee__c emp = TestDataFactory.createEmployee();
         EmployeeTest__c test = TestDataFactory.createEmployeeTest();
-        PassingTest__c passTest = TestDataFactory.createPassingTest(emp, test, Datetime.now());      
+
+        PassingTest__c passingTest = TestDataFactory.getPassingTestBuilder()
+            .setEmployee(emp)
+            .setEmployeeTest(test)
+            .setStartDate(Datetime.now())
+            .buildPassingTest();
+
+        insert passingTest;    
     }
 
     @isTest

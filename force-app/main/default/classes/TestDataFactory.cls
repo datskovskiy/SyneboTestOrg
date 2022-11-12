@@ -252,15 +252,4 @@ public with sharing class TestDataFactory {
         insert answers;
         return answers;
     }
-
-    public static PassingTest__c createPassingTest(Employee__c employee, EmployeeTest__c test, Datetime startDate) {
-        PassingTest__c passingTest = getPassingTestBuilder()
-            .setEmployee(employee)
-            .setEmployeeTest(test)
-            .setStartDate(startDate)
-            .buildPassingTest();
-
-        insert passingTest;
-        return passingTest;
-    }
 }
