@@ -1,11 +1,5 @@
 @isTest
 public with sharing class TestDataFactory {
-    private class PostWrapper {
-        public Integer id;
-        public Integer userId;
-        public String title;
-        public string body;
-    }
 
     public with sharing class PassingTestBuilder {
         private PassingTest__c passingTest = new PassingTest__c();
@@ -268,20 +262,5 @@ public with sharing class TestDataFactory {
 
         insert passingTest;
         return passingTest;
-    }
-
-    public static void createPostsFromJSON(String postsJson) {
-        List<Post__c> postsToUpsert = new List<Post__c>();
-        List<PostWrapper> posts = (List<PostWrapper>) JSON.deserialize(postsJson, List<PostWrapper>.class);
-
-        for (PostWrapper post : posts) { 
-            Post__c postToupsert = new Post__c(ExternalId__c = post.id, 
-                                                UserId__c = post.userId,
-                                                Title__c = post.title,
-                                                Body__c = post.body);                
-            postsToUpsert.add(postToupsert);
-        }
-
-        upsert postsToUpsert ExternalId__c;
     }
 }
