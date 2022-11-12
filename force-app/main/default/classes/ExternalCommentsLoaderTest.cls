@@ -33,10 +33,10 @@ public with sharing class ExternalCommentsLoaderTest {
         System.enqueueJob(new ExternalCommentsLoader());
         Test.stopTest();
 
-        PostComment__c comment = [SELECT Id, ExternalId__c FROM PostComment__c LIMIT 1];
+        PostComment__c comment = [SELECT Id, ExternalId__c FROM PostComment__c ORDER BY ExternalId__c LIMIT 1];
         Integer expected = 1;
         Integer actual = Integer.valueOf(comment.ExternalId__c);
 
-        System.assertEquals(expected, actual, 'External id must be equals ' + expected);
+        System.assertEquals(expected, actual, 'External id must be equal to external id of first post`s comment');
     }   
 }

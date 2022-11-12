@@ -8,10 +8,10 @@ public with sharing class ExternalPostsLoaderTest {
         System.enqueueJob(new ExternalPostsLoader());
         Test.stopTest();
 
-        Post__c post = [SELECT Id, ExternalId__c FROM Post__c LIMIT 1];
+        Post__c post = [SELECT Id, ExternalId__c FROM Post__c ORDER BY ExternalId__c LIMIT 1];
         Integer expected = 1;
         Integer actual = Integer.valueOf(post.ExternalId__c);
 
-        System.assertEquals(expected, actual, 'External id must be equals ' + expected);
+        System.assertEquals(expected, actual, 'External id must be equal to external id of first post');
     }   
 }

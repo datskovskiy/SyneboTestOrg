@@ -2,7 +2,10 @@
 public with sharing class TestQuestionAnswerTriggerHandlerTest {
     @TestSetup
     static void setup(){
-        EmployeeTest__c employeeTest = TestDataFactory.createEmployeeTest();
+        EmployeeTest__c employeeTest = TestDataFactory.getEmployeeTestBuilder()
+            .buildEmployeeTest();
+
+        insert employeeTest;
     }
 
     @isTest
@@ -13,8 +16,29 @@ public with sharing class TestQuestionAnswerTriggerHandlerTest {
 
         Test.startTest();
 
-        List<TestQuestion__c> questions = TestDataFactory.createTestQuestions(empTest, numElements);
-        List<TestQuestionAnswer__c> answers = TestDataFactory.createTestQuestionAnswers(questions, numElements);
+        List<TestQuestion__c> questions = new List<TestQuestion__c>();
+        for (Integer i = 0; i < numElements; i++) {
+            TestQuestion__c question = TestDataFactory.getTestQuestionBuilder()
+                .setName('Question ' + i)
+                .setEmployeeTest(empTest)
+                .buildTestQuestion();
+
+            questions.add(question);
+        }
+        insert questions;
+
+        List<TestQuestionAnswer__c> answers = new List<TestQuestionAnswer__c>();      
+        for (TestQuestion__c question : questions) {
+            for (Integer i = 0; i < numElements; i++) {
+                TestQuestionAnswer__c answer = TestDataFactory.getTestQuestionAnswerBuilder()
+                    .setName('Answer ' + i)
+                    .setTestQuestion(question)
+                    .buildTestQuestionAnswer();
+    
+                answers.add(answer);
+            }    
+        }      
+        insert answers;
 
         Test.stopTest();
 
@@ -34,8 +58,29 @@ public with sharing class TestQuestionAnswerTriggerHandlerTest {
 
         Test.startTest();
 
-        List<TestQuestion__c> questions = TestDataFactory.createTestQuestions(empTest, numElements);
-        List<TestQuestionAnswer__c> answers = TestDataFactory.createTestQuestionAnswers(questions, numElements);
+        List<TestQuestion__c> questions = new List<TestQuestion__c>();
+        for (Integer i = 0; i < numElements; i++) {
+            TestQuestion__c question = TestDataFactory.getTestQuestionBuilder()
+                .setName('Question ' + i)
+                .setEmployeeTest(empTest)
+                .buildTestQuestion();
+
+            questions.add(question);
+        }
+        insert questions;
+
+        List<TestQuestionAnswer__c> answers = new List<TestQuestionAnswer__c>();      
+        for (TestQuestion__c question : questions) {
+            for (Integer i = 0; i < numElements; i++) {
+                TestQuestionAnswer__c answer = TestDataFactory.getTestQuestionAnswerBuilder()
+                    .setName('Answer ' + i)
+                    .setTestQuestion(question)
+                    .buildTestQuestionAnswer();
+    
+                answers.add(answer);
+            }    
+        }      
+        insert answers;
 
         answers[0].Active__c = false;
         update answers;
@@ -45,7 +90,7 @@ public with sharing class TestQuestionAnswerTriggerHandlerTest {
         Integer expected = numElements * numElements - 1;
         Integer actual = Integer.valueOf(empTest.NumberAnswers__c);
 
-        System.assertEquals(expected, actual, 'Number of answers must be equals ' + expected);
+        System.assertEquals(expected, actual, 'Number of answers must be equal to amount of all test question answers related to employee test');
 
         delete answers;
         
@@ -56,6 +101,6 @@ public with sharing class TestQuestionAnswerTriggerHandlerTest {
         expected = 0;
         actual = Integer.valueOf(empTest.NumberAnswers__c);
 
-        System.assertEquals(expected, actual, 'Number of answers must be equals ' + expected);
+        System.assertEquals(expected, actual, 'Number of answers must be equal to amount of all test question answers related to employee test');
     }
 }

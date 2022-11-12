@@ -6,9 +6,34 @@ public with sharing class UpdateTestNumberAnswersBatchTest {
     static void setup() {
         Integer numElements = 3;
 
-        EmployeeTest__c employeeTest = TestDataFactory.createEmployeeTest();
-        List<TestQuestion__c> questions = TestDataFactory.createTestQuestions(employeeTest, numElements);
-        List<TestQuestionAnswer__c> answers = TestDataFactory.createTestQuestionAnswers(questions, numElements);
+        EmployeeTest__c employeeTest = TestDataFactory.getEmployeeTestBuilder()
+            .buildEmployeeTest();
+
+        insert employeeTest;
+
+        List<TestQuestion__c> questions = new List<TestQuestion__c>();
+        for (Integer i = 0; i < numElements; i++) {
+            TestQuestion__c question = TestDataFactory.getTestQuestionBuilder()
+                .setName('Question ' + i)
+                .setEmployeeTest(employeeTest)
+                .buildTestQuestion();
+
+            questions.add(question);
+        }
+        insert questions;
+
+        List<TestQuestionAnswer__c> answers = new List<TestQuestionAnswer__c>();      
+        for (TestQuestion__c question : questions) {
+            for (Integer i = 0; i < numElements; i++) {
+                TestQuestionAnswer__c answer = TestDataFactory.getTestQuestionAnswerBuilder()
+                    .setName('Answer ' + i)
+                    .setTestQuestion(question)
+                    .buildTestQuestionAnswer();
+    
+                answers.add(answer);
+            }    
+        }      
+        insert answers;
     } 
     
     @isTest
@@ -26,7 +51,7 @@ public with sharing class UpdateTestNumberAnswersBatchTest {
         Integer expected = 9;
         Integer actual = Integer.valueOf(empTest.NumberAnswers__c);
 
-        System.assertEquals(expected, actual, 'Number of answers must be equals ' + expected);
+        System.assertEquals(expected, actual, 'Number of answers must be equal to amount of all test question answers related to employee test');
     }
 
     @isTest

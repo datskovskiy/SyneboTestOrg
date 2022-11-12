@@ -3,8 +3,15 @@ public with sharing class PassingTestTriggerHandlerTest {
 
     @TestSetup
     public static void setup() {
-        Employee__c emp = TestDataFactory.createEmployee();
-        EmployeeTest__c test = TestDataFactory.createEmployeeTest();
+        Employee__c emp = TestDataFactory.getEmployeeBuilder()
+            .buildEmployee();
+        
+        insert emp;
+
+        EmployeeTest__c test = TestDataFactory.getEmployeeTestBuilder()
+            .buildEmployeeTest();
+
+        insert test;
 
         PassingTest__c passingTest = TestDataFactory.getPassingTestBuilder()
             .setEmployee(emp)
