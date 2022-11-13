@@ -1,0 +1,11 @@
+<template>
+    <lightning-card title="Comments" icon-name="custom:custom63">
+        <div class="slds-m-around_medium">
+            <p>Record Id: {recordId}</p>
+            <template if:true={completedLoading}>
+                <lightning-datatable key-field="Id" data={postComments} columns={columns}>
+                </lightning-datatable>
+            </template>
+        </div>
+    </lightning-card>
+</template>
