@@ -1,0 +1,14 @@
+<aura:component controller="PostController" implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+
+    <aura:attribute type="PostComment__c[]" name="postComments"/>
+    <aura:attribute type="List" name="postCommentsColumns"/>
+    <aura:attribute type="String" name="error"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.fetchPostComments}"/>
+    
+    <lightning:datatable data="{!v.postComments }"
+                         columns="{! v.postCommentsColumns }"
+                         keyField="id"
+                         hideCheckboxColumn="true"/>
+    
+</aura:component>
